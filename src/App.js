@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
-import styled, { injectGlobal, keyframes } from "styled-components";
+import styled, { injectGlobal, ThemeProvider } from "styled-components";
+import theme from "./theme.js";
+
 
 injectGlobal`
     body {
@@ -8,57 +10,34 @@ injectGlobal`
     }
 `;
 
-class App extends Component {
-    render() {
-        return (
-            <Container>
-                <Button>Hello</Button>
-                <Button danger rotationTime={5}>Hello</Button>
-                <Anchor href="http://google.com">Go to google</Anchor>
-            </Container>
-
-        );
-    }
-}
-
 const Container = styled.div`
     height: 100vh;
     width: 100%;
     background-color: pink;
 `;
 
+const Card = styled.div`
+    background-color: red;
+`;
+
 const Button = styled.button`
-    border-radius: 50px;
-    padding: 5px;
-    min-width: 120px;
-    color: #FFFFFF;
-    font-weight: 600;
-    -webkit-appearance: none;
-    cursor: pointer;
-    &:active, &:focus {
-        outline: none;
-    }
-    background-color: ${props => (props.danger ?"#e74c3c":"#2ecc71")};
-    ${props => {
-        if(props.danger) {
-            return `animation: ${rotation} ${props.rotationTime}s linear infinite`;
-        }
-}}
+    border-radius: 30px;
+    padding: 25px 15px;
+    background-color: ${props => props.theme.successColor}
 `;
 
-const Anchor = Button.withComponent("a").extend`
-    text-decoration: none;
-`; //a tag 도 button 과 같은 스타일 적용
-
-
-const rotation = keyframes`
-    from {
-        transform: rotate(0deg);
+class App extends Component {
+    render() {
+        return (
+            <ThemeProvider theme={theme}>
+                <Container>
+                    <Form />
+                </Container>
+            </ThemeProvider>
+        );
     }
-    to {
-        transform: rotate(360deg);
-    }
-`;
+}
 
+const Form = () => (<Card><Button>Hello</Button></Card>);
 
 export default App;
